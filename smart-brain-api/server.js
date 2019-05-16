@@ -16,10 +16,16 @@ const signIn = require("./controllers/signin");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
 
+const PORT = process.env.PORT;
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+app.get("/", (req, res) => {
+  res.json("it works!!!");
+});
 
 app.post("/signin", (req, res) => {
   signIn.handleSignIn(req, res, bcrypt, knex);
@@ -37,6 +43,10 @@ app.put("/image", (req, res) => {
   image.handleImage(req, res, knex);
 });
 
-app.listen(3000, () => {
-  console.log("app is running on port 3000");
+app.post("/imageurl", (req, res) => {
+  image.detectFace(req, res);
+});
+
+app.listen(PORT, () => {
+  console.log(`app is running on port ${PORT}`);
 });
